@@ -13,7 +13,7 @@ static void callback_vr_input(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
 }
 #endif
 
-struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber, VC_IMAGE_TYPE_T image_type) {
+struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber, VC_IMAGE_TYPE_T image_type, uint32_t layer, DISPMANX_FLAGS_ALPHA_T alpha_flags) {
     int components = 3;
     if (image_type == VC_IMAGE_RGBA32) {
         components = 4;
@@ -103,12 +103,12 @@ struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber, VC_IMAGE_TYPE_T image_typ
     vc_dispmanx_rect_set(dispmanx_context->dst_rect, 0, 0, info.width, info.height);
 
     VC_DISPMANX_ALPHA_T alpha = {
-        DISPMANX_FLAGS_ALPHA_FIXED_ALL_PIXELS,
+        alpha_flags,
         255, /*alpha 0->255*/
         0
     };
 
-    dispmanx_context->elem = vc_dispmanx_element_add(dispmanx_context->update, dispmanx_context->display, 0, dispmanx_context->dst_rect, dispmanx_context->front_resource, dispmanx_context->src_rect, 
+    dispmanx_context->elem = vc_dispmanx_element_add(dispmanx_context->update, dispmanx_context->display, layer, dispmanx_context->dst_rect, dispmanx_context->front_resource, dispmanx_context->src_rect, 
         DISPMANX_PROTECTION_NONE, &alpha, NULL, DISPMANX_NO_ROTATE);
     if (dispmanx_context->elem == 0) {
         fprintf(stderr, "fbg_dispmanxSetup: vc_dispmanx_element_add failed for display %i\n", displayNumber);

@@ -1,3 +1,7 @@
+**DISCLAIMER**: This fork's purpose is to add alpha support for `dispmanx`. While the edits are minor, they are made to fit my needs and may not be working 100% correctly.
+
+---
+
 FBGraphics : Lightweight C 2D graphics API agnostic library with parallelism support
 =====
 

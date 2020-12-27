@@ -724,7 +724,8 @@ void fbg_pixel(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g,
     *pix_pointer++ = r;
     *pix_pointer++ = g;
     *pix_pointer++ = b;
-    pix_pointer += fbg->comp_offset;
+    if(fbg->components == 4) *pix_pointer++ = 255;
+    else pix_pointer += fbg->comp_offset;
 }
 
 void fbg_pixela(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
@@ -736,7 +737,12 @@ void fbg_pixela(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g
     pix_pointer += 1;
     *pix_pointer = ((a * b + (255 - a) * (*pix_pointer)) >> 8);;
     pix_pointer += 1;
-    pix_pointer += fbg->comp_offset;
+    if(fbg->components == 4){
+        *pix_pointer = ((*pix_pointer + 127 + a) < *pix_pointer) ? 255 : (*pix_pointer + 127 + a);
+        pix_pointer += 1;
+    }else{
+        pix_pointer += fbg->comp_offset;
+    }
 }
 
 void fbg_fpixel(struct _fbg *fbg, int x, int y) {
@@ -856,7 +862,12 @@ void fbg_recta(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, un
             pix_pointer += 1;
             *pix_pointer = ((a * b + (255 - a) * (*pix_pointer)) >> 8);
             pix_pointer += 1;
-            pix_pointer += fbg->comp_offset;
+            if(fbg->components == 4){
+                *pix_pointer = ((*pix_pointer + 127 + a) < *pix_pointer) ? 255 : (*pix_pointer + 127 + a);
+                pix_pointer += 1;
+            }else{
+                pix_pointer += fbg->comp_offset;
+            }
         }
 
         pix_pointer += (fbg->line_length - w3);
@@ -873,7 +884,8 @@ void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, uns
             *pix_pointer++ = r;
             *pix_pointer++ = g;
             *pix_pointer++ = b;
-            pix_pointer += fbg->comp_offset;
+            if(fbg->components == 4) *pix_pointer++ = 255;
+            else pix_pointer += fbg->comp_offset;
         }
 
         pix_pointer += (fbg->line_length - w3);

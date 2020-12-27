@@ -85,9 +85,12 @@
     //! initialize a FB Graphics dispmanx context
     /*!
       \param displayNumber dispmanx display number
+      \param image_type dispmanx image type
+      \param layer dispmanx layer
+      \param alpha_flags dispmanx alpha flags (use DISPMANX_FLAGS_ALPHA_FIXED_ALL_PIXELS if uncertain)
       \return FBG data structure pointer
     */
-    extern struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber);
+    extern struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber, VC_IMAGE_TYPE_T image_type, uint32_t layer, DISPMANX_FLAGS_ALPHA_T alpha_flags);
 
     //! add additional flip content (will be executed between dispmanx start / sync)
     /*!
